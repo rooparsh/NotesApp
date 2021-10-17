@@ -15,7 +15,7 @@ plugins {
 group = "com.darklabs"
 version = "0.0.1"
 application {
-    mainClass.set("com.darklabs.Application")
+    mainClass.set("com.darklabs.ApplicationKt")
 }
 
 repositories {
