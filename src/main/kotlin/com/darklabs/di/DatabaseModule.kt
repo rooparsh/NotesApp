@@ -5,6 +5,6 @@ import org.koin.dsl.module
 
 object DatabaseModule {
     val module = module {
-        single { DatabaseConnectionFactory(get()).apply { init() }.database }
+        single { DatabaseConnectionFactory().apply { init() }.database }
     }
 }
