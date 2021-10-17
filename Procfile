@@ -1,1 +1,1 @@
-web: ./build/install/projectName/bin/NotesApp
+web: ./build/install/NotesApp/bin/NotesApp
