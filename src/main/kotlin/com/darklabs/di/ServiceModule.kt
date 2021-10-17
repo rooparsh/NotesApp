@@ -7,7 +7,7 @@ import org.koin.dsl.module
 
 object ServiceModule {
     val module = module {
-        single { HoconApplicationConfig(ConfigFactory.load()) }
+        single<ApplicationConfig> { HoconApplicationConfig(ConfigFactory.load()) }
         single { TokenManager(get()) }
     }
 }

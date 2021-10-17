@@ -7,12 +7,12 @@ import com.darklabs.model.User
 import io.ktor.config.*
 import java.util.*
 
-class TokenManager(config: HoconApplicationConfig) {
+class TokenManager(config: ApplicationConfig) {
 
-    private val audience = config.propertyOrNull("jwt.audience")?.getString() ?: "http://0.0.0.0:8080/me"
-    private val secret = config.propertyOrNull("jwt.secret")?.getString() ?: "secret111"
-    private val issuer = config.propertyOrNull("jwt.issuer")?.getString() ?: "http://0.0.0.0:8080/"
-    val realm = config.propertyOrNull("jwt.realm")?.getString() ?: "Access to 'me'"
+    private val audience = config.propertyOrNull("jwt.audience")?.getString().orEmpty()
+    private val secret = config.propertyOrNull("jwt.secret")?.getString().orEmpty()
+    private val issuer = config.propertyOrNull("jwt.issuer")?.getString().orEmpty()
+    val realm = config.propertyOrNull("jwt.realm")?.getString().orEmpty()
     private val expDate = System.currentTimeMillis() + 600_000
 
     fun generateJwtToken(user: User): String? {
