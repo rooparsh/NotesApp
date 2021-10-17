@@ -9,10 +9,10 @@ import java.util.*
 
 class TokenManager(config: HoconApplicationConfig) {
 
-    private val audience = config.property("jwt.audience").getString()
-    private val secret = config.property("jwt.secret").getString()
-    private val issuer = config.property("jwt.issuer").getString()
-    val realm = config.property("jwt.realm").getString()
+    private val audience = config.propertyOrNull("jwt.audience")?.getString() ?: "http://0.0.0.0:8080/me"
+    private val secret = config.propertyOrNull("jwt.secret")?.getString() ?: "secret111"
+    private val issuer = config.propertyOrNull("jwt.issuer")?.getString() ?: "http://0.0.0.0:8080/"
+    val realm = config.propertyOrNull("jwt.realm")?.getString() ?: "Access to 'me'"
     private val expDate = System.currentTimeMillis() + 600_000
 
     fun generateJwtToken(user: User): String? {

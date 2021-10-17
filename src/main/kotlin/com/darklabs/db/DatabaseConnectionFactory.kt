@@ -12,7 +12,8 @@ class DatabaseConnectionFactory {
 
     fun init() {
         database = Database.connect(
-            url = "jdbc:postgresssql://${uri.host}:${uri.port}:${uri.path}",
+            url = "jdbc:postgresssql://${uri.host}:${uri.port}${uri.path}",
+            driver = "org.postgresql.Driver",
             user = userName,
             password = password
         )
