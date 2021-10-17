@@ -12,7 +12,7 @@ class DatabaseConnectionFactory {
 
     fun init() {
         database = Database.connect(
-            url = "jdbc:postgresssql://${uri.host}:${uri.port}",
+            url = "jdbc:postgresssql://${uri.host}:${uri.port}:${uri.path}",
             user = userName,
             password = password
         )
