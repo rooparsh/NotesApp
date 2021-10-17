@@ -1,18 +1,20 @@
 package com.darklabs.db
 
-import io.ktor.config.*
 import org.ktorm.database.Database
+import java.net.URI
 
-class DatabaseConnectionFactory(private val config: HoconApplicationConfig) {
-
+class DatabaseConnectionFactory {
     lateinit var database: Database
+    private val uri = URI(System.getenv("DATABASE_URL"))
+    private val uriArray = uri.userInfo.split(":").toTypedArray()
+    private val userName = uriArray[0]
+    private val password = uriArray[1]
 
     fun init() {
         database = Database.connect(
-            url = config.property("db.jdbcUrl").getString(),
-            driver = config.property("db.driver").getString(),
-            user = config.property("db.dbUser").getString(),
-            password = config.property("db.dbPassword").getString()
+            url = "jdbc:postgresssql://${uri.host}:${uri.port}",
+            user = userName,
+            password = password
         )
     }
 }
