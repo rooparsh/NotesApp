@@ -1,4 +1,4 @@
-package com.darklabs.route
+package com.darklabs.route.note
 
 import com.darklabs.model.CommonResponse
 import com.darklabs.model.Note
@@ -9,17 +9,7 @@ import io.ktor.request.*
 import io.ktor.response.*
 import io.ktor.routing.*
 
-fun Routing.notesRoute(noteRepository: NoteRepository) {
-
-    get("/notes") {
-        val notes = noteRepository.getAllNotes()
-        call.respond(
-            HttpStatusCode.OK, CommonResponse(
-                data = notes, message = "Success"
-            )
-        )
-    }
-
+fun Route.addNote(noteRepository: NoteRepository) {
     post("/note") {
         val requestNote = call.receive<Note>()
         val result = noteRepository.insertNote(requestNote)
@@ -34,5 +24,4 @@ fun Routing.notesRoute(noteRepository: NoteRepository) {
             call.respond(HttpStatusCode.BadRequest, CommonResponse(data = null, message = "Failed to insert note"))
         }
     }
-
 }

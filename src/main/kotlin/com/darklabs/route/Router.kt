@@ -2,7 +2,8 @@ package com.darklabs.route
 
 import com.darklabs.repository.AuthRepository
 import com.darklabs.repository.NoteRepository
-import com.darklabs.route.auth.authRouter
+import com.darklabs.route.router.authRouter
+import com.darklabs.route.router.notesRouter
 import io.ktor.application.*
 import io.ktor.response.*
 import io.ktor.routing.*
@@ -18,7 +19,7 @@ fun Application.configureRouting(
         }
 
         fileRoute()
-        notesRoute(noteRepository)
+        notesRouter(noteRepository)
         authRouter(authRepository)
     }
 }

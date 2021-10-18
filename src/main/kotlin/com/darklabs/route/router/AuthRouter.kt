@@ -1,6 +1,8 @@
-package com.darklabs.route.auth
+package com.darklabs.route.router
 
 import com.darklabs.repository.AuthRepository
+import com.darklabs.route.auth.loginRoute
+import com.darklabs.route.auth.registerRoute
 import io.ktor.application.*
 import io.ktor.auth.*
 import io.ktor.auth.jwt.*
