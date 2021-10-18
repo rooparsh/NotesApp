@@ -1,8 +1,10 @@
 package com.darklabs.repository
 
+import com.auth0.jwt.JWTVerifier
 import com.darklabs.db.entity.UserEntity
 import com.darklabs.model.User
 import com.darklabs.service.TokenManager
+import io.ktor.auth.jwt.*
 import org.ktorm.database.Database
 import org.ktorm.dsl.*
 import org.mindrot.jbcrypt.BCrypt
@@ -12,6 +14,9 @@ interface AuthRepository {
     suspend fun insertUser(user: User): Int
     suspend fun validatePassword(password: String?, savedPassword: String?): Boolean
     suspend fun generateToken(user: User): String?
+    suspend fun getJwtPrincipal(jwtCredential: JWTCredential): JWTPrincipal?
+    fun verifyToken(): JWTVerifier
+    fun getRealm(): String
 }
 
 class AuthRepositoryImpl(private val database: Database, private val tokenManager: TokenManager) : AuthRepository {
@@ -50,5 +55,32 @@ class AuthRepositoryImpl(private val database: Database, private val tokenManage
 
     override suspend fun generateToken(user: User): String? {
         return tokenManager.generateJwtToken(user)
+    }
+
+    override suspend fun getJwtPrincipal(jwtCredential: JWTCredential): JWTPrincipal? {
+        val username = jwtCredential.payload.getClaim("username").asString()
+        return if (username.isNotEmpty()) {
+            val user = checkUserExists(
+                user = User(
+                    username = username,
+                    password = ""
+                )
+            )
+            if (user != null) {
+                JWTPrincipal(jwtCredential.payload)
+            } else {
+                null
+            }
+        } else {
+            null
+        }
+    }
+
+    override fun verifyToken(): JWTVerifier {
+        return tokenManager.verifyJwtToken()
+    }
+
+    override fun getRealm(): String {
+        return tokenManager.realm
     }
 }

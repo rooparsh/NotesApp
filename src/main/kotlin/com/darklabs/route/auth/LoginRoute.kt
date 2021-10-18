@@ -22,14 +22,20 @@ fun Route.loginRoute(authRepository: AuthRepository) {
         val user = authRepository.checkUserExists(userRequest)
 
         if (user == null) {
-            call.respond(HttpStatusCode.BadRequest, CommonResponse(data = "null", message = "Invalid username/password"))
+            call.respond(
+                HttpStatusCode.BadRequest,
+                CommonResponse(data = "null", message = "Invalid username/password")
+            )
             return@post
         }
 
         val isPasswordMatch = authRepository.validatePassword(userRequest.password, user.password)
 
         if (isPasswordMatch.not()) {
-            call.respond(HttpStatusCode.BadRequest, CommonResponse(data = "null", message = "Invalid username/password"))
+            call.respond(
+                HttpStatusCode.BadRequest,
+                CommonResponse(data = "null", message = "Invalid username/password")
+            )
             return@post
         }
 

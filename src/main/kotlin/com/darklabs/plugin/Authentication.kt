@@ -1,21 +1,17 @@
 package com.darklabs.plugin
 
-import com.darklabs.service.TokenManager
+import com.darklabs.repository.AuthRepository
 import io.ktor.application.*
 import io.ktor.auth.*
 import io.ktor.auth.jwt.*
 
-fun Application.configureAuthentication(tokenManager: TokenManager) {
+fun Application.configureAuthentication(authRepository: AuthRepository) {
     install(Authentication) {
         jwt {
-            verifier(tokenManager.verifyJwtToken())
-            realm = tokenManager.realm
+            verifier(authRepository.verifyToken())
+            realm = authRepository.getRealm()
             validate { jwtCredential ->
-                if (jwtCredential.payload.getClaim("username").asString().isNotEmpty()) {
-                    JWTPrincipal(jwtCredential.payload)
-                } else {
-                    null
-                }
+                authRepository.getJwtPrincipal(jwtCredential)
             }
         }
     }
