@@ -11,7 +11,7 @@ interface User : Entity<User> {
     val password: String
 }
 
-object UserEntity : Table<User>("user") {
+object UserEntity : Table<User>("user_info") {
     val id = int("id").primaryKey().bindTo { it.id }
     val userName = varchar("username").bindTo { it.userName }
     val password = varchar("password").bindTo { it.password }
