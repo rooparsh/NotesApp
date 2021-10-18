@@ -18,7 +18,7 @@ class AuthRepositoryImpl(private val database: Database, private val tokenManage
 
     override suspend fun checkUserExists(user: User): User? {
 
-        val userName = user.username?.lowercase().orEmpty()
+        val userName = user.username.lowercase()
 
         return database.from(UserEntity)
             .select()
@@ -26,8 +26,8 @@ class AuthRepositoryImpl(private val database: Database, private val tokenManage
             .map {
                 User(
                     id = it[UserEntity.id],
-                    username = it[UserEntity.userName],
-                    password = it[UserEntity.password]
+                    username = it[UserEntity.userName].orEmpty(),
+                    password = it[UserEntity.password].orEmpty()
                 )
             }
             .firstOrNull()
@@ -35,7 +35,7 @@ class AuthRepositoryImpl(private val database: Database, private val tokenManage
 
     override suspend fun insertUser(user: User): Int {
 
-        val userName = user.username?.lowercase().orEmpty()
+        val userName = user.username.lowercase()
         val password = user.hashedPassword()
 
         return database.insert(UserEntity) {

@@ -7,10 +7,10 @@ import org.mindrot.jbcrypt.BCrypt
 @Serializable
 data class User(
     @SerialName("id") val id: Int? = null,
-    @SerialName("username") val username: String?,
-    @SerialName("password") val password: String?
+    @SerialName("username") val username: String,
+    @SerialName("password") val password: String
 ) {
     fun hashedPassword(): String = BCrypt.hashpw(password, BCrypt.gensalt())
 
-    fun isValidCred() = username?.let { it.length >= 3 } ?: false && password?.let { it.length >= 6 } ?: false
+    fun isValidCred() = username.length >= 3 && password.length >= 6
 }

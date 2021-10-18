@@ -13,21 +13,21 @@ fun Route.registerRoute(authRepository: AuthRepository) {
     post("/register") {
         val userRequest = call.receive<User>()
 
-        if (userRequest.isValidCred()) {
-            call.respond(HttpStatusCode.BadRequest, CommonResponse(data = null, message = "Check validation"))
+        if (userRequest.isValidCred().not()) {
+            call.respond(HttpStatusCode.BadRequest, CommonResponse(data = "null", message = "Check validation"))
             return@post
         }
 
         val doesUserExist = authRepository.checkUserExists(userRequest) != null
 
         if (doesUserExist) {
-            call.respond(HttpStatusCode.BadRequest, CommonResponse(data = null, message = "User already exists"))
+            call.respond(HttpStatusCode.BadRequest, CommonResponse(data = "null", message = "User already exists"))
             return@post
         }
 
         authRepository.insertUser(userRequest)
 
-        call.respond(HttpStatusCode.Created, CommonResponse(data = null, message = "Successfully inserted"))
+        call.respond(HttpStatusCode.Created, CommonResponse(data = "null", message = "Successfully inserted"))
 
     }
 }
